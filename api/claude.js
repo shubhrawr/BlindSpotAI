@@ -1,46 +1,121 @@
-// Serverless proxy: keeps your Anthropic API key on the server.
-const buckets = new Map(); // best-effort, per-instance rate limit
+// BlindSpot AI — OpenRouter serverless proxy
+
+const buckets = new Map();
 const LIMIT = Number(process.env.RATE_LIMIT_PER_HOUR || 30);
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'POST only' });
+  }
 
-  const allowed = process.env.ALLOWED_ORIGIN; // e.g. https://yourapp.vercel.app
-  if (allowed && req.headers.origin && req.headers.origin !== allowed)
+  const allowed = process.env.ALLOWED_ORIGIN;
+
+  if (
+    allowed &&
+    req.headers.origin &&
+    req.headers.origin !== allowed
+  ) {
     return res.status(403).json({ error: 'forbidden' });
+  }
 
-  const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+  const ip =
+    (req.headers['x-forwarded-for'] || '')
+      .split(',')[0]
+      .trim() || 'unknown';
+
   const now = Date.now();
-  const hits = (buckets.get(ip) || []).filter(t => now - t < 3600e3);
-  if (hits.length >= LIMIT) return res.status(429).json({ error: 'rate_limited' });
-  hits.push(now); buckets.set(ip, hits);
+
+  const hits = (buckets.get(ip) || []).filter(
+    t => now - t < 3600e3
+  );
+
+  if (hits.length >= LIMIT) {
+    return res.status(429).json({ error: 'rate_limited' });
+  }
+
+  hits.push(now);
+  buckets.set(ip, hits);
 
   const { messages, max_tokens } = req.body || {};
-  const ok = Array.isArray(messages) && messages.length > 0 && messages.length <= 30 &&
-    messages.every(m => m && ['user', 'assistant'].includes(m.role) && typeof m.content === 'string') &&
+
+  const ok =
+    Array.isArray(messages) &&
+    messages.length > 0 &&
+    messages.length <= 30 &&
+    messages.every(
+      m =>
+        m &&
+        ['user', 'assistant'].includes(m.role) &&
+        typeof m.content === 'string'
+    ) &&
     messages.reduce((n, m) => n + m.content.length, 0) <= 60000;
-  if (!ok) return res.status(400).json({ error: 'bad request' });
-  if (!process.env.ANTHROPIC_API_KEY) return res.status(500).json({ error: 'server not configured' });
+
+  if (!ok) {
+    return res.status(400).json({ error: 'bad request' });
+  }
+
+  if (!process.env.OPENROUTER_API_KEY) {
+    return res.status(500).json({
+      error: 'OPENROUTER_API_KEY is not configured'
+    });
+  }
 
   try {
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-5-5',
-        max_tokens: Math.min(Number(max_tokens) || 1500, 3500),
-        messages,
-      }),
-    });
-    const j = await r.json();
-    if (!r.ok) return res.status(502).json({ error: (j.error && j.error.message) || 'upstream error' });
-    const text = (j.content || []).filter(c => c.type === 'text').map(c => c.text).join('');
+    const response = await fetch(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'HTTP-Referer': 'https://blindspotai-eight.vercel.app',
+          'X-OpenRouter-Title': 'BlindSpot AI'
+        },
+
+        body: JSON.stringify({
+          model:
+            process.env.OPENROUTER_MODEL ||
+            'openai/gpt-5-mini',
+
+          messages,
+
+          max_tokens: Math.min(
+            Number(max_tokens) || 1500,
+            3500
+          )
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('OpenRouter error:', data);
+
+      return res.status(502).json({
+        error:
+          data?.error?.message ||
+          'OpenRouter request failed'
+      });
+    }
+
+    const text =
+      data?.choices?.[0]?.message?.content || '';
+
+    if (!text) {
+      return res.status(502).json({
+        error: 'OpenRouter returned an empty response'
+      });
+    }
+
     return res.status(200).json({ text });
-  } catch (e) {
-    return res.status(502).json({ error: 'upstream unreachable' });
+
+  } catch (error) {
+    console.error('OpenRouter connection error:', error);
+
+    return res.status(502).json({
+      error: 'Unable to reach OpenRouter'
+    });
   }
 };
