@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>BlindSpot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f6f1e7;--card:#fffdf8;--ink:#15140f;--mute:#6f6a5d;--line:#e6dfd0;--acc:#15140f;--soft:#efe8d8;--bs:#f9d3c4;--as:#ddd5f4;--ev:#d3e3f6;--qq:#f8e8a8;--rf:#cdeedd;--r:#c4452d;--a:#9a6a00;--g:#1f7a52;--u:#6a4fc0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13120e;--card:#1c1a15;--ink:#f3eee2;--mute:#a39d8d;--line:#322f27;--acc:#f3eee2;--soft:#26231c;--bs:#4a2b21;--as:#33295a;--ev:#223650;--qq:#4a3f16;--rf:#1e4333;--r:#ff9a82;--a:#f0c04c;--g:#5fd6a0;--u:#b8a5ff}}
+:root[data-theme="dark"]{--bg:#13120e;--card:#1c1a15;--ink:#f3eee2;--mute:#a39d8d;--line:#322f27;--acc:#f3eee2;--soft:#26231c;--bs:#4a2b21;--as:#33295a;--ev:#223650;--qq:#4a3f16;--rf:#1e4333;--r:#ff9a82;--a:#f0c04c;--g:#5fd6a0;--u:#b8a5ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Inter',system-ui,-apple-system,sans-serif}
+main{max-width:980px;margin:0 auto;padding:0 20px 90px}
+.top-bar{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.logo{font:700 1.15rem 'Fraunces',Georgia,serif}.logo i{color:var(--r)}
+h1,.big,.serif{font-family:'Fraunces',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:-.025em;line-height:1.05}
+.hero h1{font-size:clamp(2.4rem,7vw,4.2rem);margin:6px 0 16px}.hero h1 em{color:var(--r);font-style:italic}
+.big{font-size:clamp(1.8rem,5vw,2.8rem);margin:0 0 8px}.lead{font-size:1.1rem;color:var(--mute);max-width:520px}
+.eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:20px;align-items:center;padding:20px 0 56px}
+@media(max-width:760px){.hero{grid-template-columns:1fr}}
+h2{font-size:1.02rem;margin:0 0 8px}
+label{display:block;font-weight:600;margin:18px 0 6px;font-size:.9rem}.h{font-weight:400;color:var(--mute)}
+textarea,input{width:100%;font:inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--bg);color:var(--ink)}
+textarea:focus,input:focus{outline:none;border-color:var(--ink)}textarea{min-height:70px;resize:vertical}input[type=range]{padding:0;accent-color:var(--ink)}
+.xl{font:500 1.35rem/1.35 'Fraunces',Georgia,serif;border:0;border-bottom:1.5px solid var(--line);border-radius:0;background:transparent;padding:10px 0}textarea.xl{min-height:120px;font-size:1.1rem}
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}summary{cursor:pointer;font-weight:600;padding:6px 0}
+button{font:inherit;font-weight:600;padding:12px 22px;border-radius:99px;border:0;background:var(--ink);color:var(--bg);cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-2px)}button.g{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}button:disabled{opacity:.5}button.sm{padding:6px 14px;font-size:.85rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.halo{position:relative;width:100%;max-width:440px;aspect-ratio:1;margin:auto}
+.halo:before{content:'';position:absolute;inset:-4%;border-radius:50%;background:radial-gradient(circle,transparent 52%,color-mix(in srgb,var(--bs) 70%,transparent) 62%,transparent 72%);filter:blur(10px)}
+.ring{position:absolute;inset:23%;border:2px dashed var(--ink);border-radius:50%;opacity:.35}
+.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30%;aspect-ratio:1;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;text-align:center;font:600 .78rem/1.2 'Fraunces',Georgia,serif;padding:8px}
+.hn{position:absolute;transform:translate(-50%,-50%);font-size:.74rem;font-weight:600;padding:5px 10px;border-radius:99px;white-space:nowrap}
+.hn.k{background:var(--ev)}.hn.u{background:var(--bs);opacity:.2;filter:blur(5px);animation:rev 1.4s ease forwards}
+@keyframes rev{to{opacity:1;filter:blur(0)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px 22px;margin:14px 0;animation:up .45s ease both}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card.bs{background:var(--bs);border-color:transparent}.card.as{background:var(--as);border-color:transparent}.card.qq{background:var(--qq);border-color:transparent}.card.ev{background:var(--ev);border-color:transparent}.card.rf{background:var(--rf);border-color:transparent}
+.num{font:600 2.4rem 'Fraunces',Georgia,serif;float:right;opacity:.35;line-height:1}
+.rh{padding:6px 0 4px}.rh .big{margin-top:8px}
+.tabs{display:flex;gap:4px;overflow-x:auto;margin:18px 0;padding:5px;background:var(--card);border:1px solid var(--line);border-radius:99px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:5}
+.tabs button{background:transparent;color:var(--mute);white-space:nowrap;padding:8px 15px;font-size:.84rem}.tabs button.on{background:var(--ink);color:var(--bg)}
+@media(max-width:640px){.tabs{position:fixed;left:8px;right:8px;top:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);box-shadow:0 8px 30px rgba(0,0,0,.18)}}
+.pill{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:99px;background:color-mix(in srgb,currentColor 14%,transparent);margin-right:6px;letter-spacing:.05em}
+.FACT{color:var(--g)}.ASSUMPTION{color:var(--a)}.POSSIBILITY{color:var(--u)}.UNKNOWN{color:var(--u)}.low{color:var(--r)}.medium{color:var(--a)}.high{color:var(--g)}
+.m{color:var(--mute);font-size:.9rem}.note{background:var(--soft);border-radius:14px;padding:11px 14px;font-size:.85rem;margin-top:16px;color:var(--mute)}
+mark{background:color-mix(in srgb,#f2c94c 55%,transparent);color:inherit;padding:0 3px;border-radius:3px;font-weight:600}
+.lbl{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);margin-right:6px}
+.ln{display:flex;gap:8px;margin:8px 0;align-items:baseline}.ln .ic{flex:none}
+.top{display:grid;gap:8px;margin-top:8px}.top div{border-left:4px solid var(--ink);background:var(--soft);padding:9px 13px;border-radius:0 14px 14px 0}
+.card ul{list-style:none;padding-left:0;margin:4px 0}.card li{padding-left:16px;position:relative;margin:5px 0}.card li:before{content:'•';position:absolute;left:2px}
+.oo{display:grid;grid-template-columns:1fr auto 1.2fr;gap:14px;align-items:stretch;margin:14px 0}
+.oo>div{border-radius:22px;padding:18px 20px}.oo .a{background:var(--ev)}.oo .b{background:var(--bs)}.oo .mid{display:grid;place-items:center;text-align:center;font:italic 600 .95rem 'Fraunces',Georgia,serif;max-width:120px;padding:0}
+@media(max-width:760px){.oo{grid-template-columns:1fr}.oo .mid{max-width:none}}
+.q textarea{min-height:52px;margin-top:6px}#err{color:var(--r);margin-top:10px}
+.scr{overflow-x:auto;border-radius:22px;background:var(--card);border:1px solid var(--line)}
+#mw{position:relative;min-width:820px;padding:16px}#ms{position:absolute;left:0;top:0;pointer-events:none}
+.cols{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;position:relative}
+.col h3{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin:0 0 8px}
+.nd{padding:8px 11px;margin-bottom:10px;border-radius:99px 99px 99px 99px;border:1.5px solid transparent;background:var(--soft);font-size:.8rem;line-height:1.35;cursor:pointer;transition:.2s}
+.col:nth-child(2) .nd{background:var(--ev)}.col:nth-child(3) .nd{background:var(--as)}.col:nth-child(4) .nd{background:var(--bs)}.col:nth-child(5) .nd{background:var(--qq)}
+.nd:hover,.nd.sel{border-color:var(--ink)}.nd.weak{border:1.5px dashed var(--a)}.nd.dim{opacity:.25}
+#ms path{fill:none;stroke-width:2;transition:.2s}#ms path.dim{opacity:.06}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--mute);margin:10px 2px}
+.chat{display:flex;flex-direction:column;gap:10px;margin:10px 0}.msg{max-width:88%;padding:11px 15px;border-radius:20px;font-size:.93rem}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--bg);border-bottom-right-radius:4px}.msg.assistant{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg ul{margin:4px 0;padding-left:18px;list-style:disc}.msg li:before{content:none}.msg li{padding:0}
+.sug{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.sug button{background:var(--qq);color:var(--ink);font-weight:500;font-size:.85rem;text-align:left;padding:8px 14px}
+.cin{display:flex;gap:8px;margin-top:10px}
+.load{min-height:70vh;display:grid;place-content:center;gap:26px;text-align:center}.load ul{list-style:none;padding:0;margin:0}
+.load li{font:500 1.5rem 'Fraunces',Georgia,serif;opacity:.15;transition:.6s;padding:4px 0}.load li.on{opacity:1}.load li.d{opacity:.4}
+.pulse{width:84px;height:84px;margin:auto;border-radius:50%;border:2px dashed var(--ink);animation:sp 6s linear infinite;position:relative}
+.pulse:after{content:'';position:absolute;inset:26px;border-radius:50%;background:var(--ink);animation:pl 1.6s ease-in-out infinite}
+@keyframes sp{to{transform:rotate(360deg)}}@keyframes pl{50%{transform:scale(1.5);opacity:.4}}
+.end{text-align:center;padding:40px 0 10px}.end p{color:var(--mute)}
+
+.tli{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:start}.dt{font:700 .78rem 'Inter',sans-serif;letter-spacing:.08em;color:var(--mute);padding-top:30px}
+.tli .card{margin:8px 0;border-left:4px solid var(--ink)}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></head><body><main>
+<div class="top-bar"><span class="logo">Blind<i>●</i>Spot</span><span style="display:flex;gap:8px"><button class="g sm" onclick="showHist()">My decisions</button><button class="sm" onclick="newD()">New decision</button></span></div>
+<div id="app"></div>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const H=s=>esc(s).replace(/==(.+?)==/g,'<mark>$1</mark>');
+const B=x=>Array.isArray(x)?x:(x?[x]:[]);
+const esc=s=>{const e=document.createElement('div');e.textContent=s==null?'':String(s);return e.innerHTML};
+let S={chat:[],cbusy:false,sel:null,in:{},v1:null,cur:null,tab:'reasoning',ans:{},busy:false,err:''};
+const BASE=`You are a reasoning partner, NOT a decision-maker. Never recommend, lean toward, or rank the options. Never use phrases like "you should", "I recommend", "the best choice". Use exploratory wording ("You may want to examine whether...", "This reasoning appears to assume..."). Never label the person as biased. Tag each blind spot: FACT (stated by user), POSSIBILITY (could occur, unconfirmed) or UNKNOWN (missing information); never present a possibility as fact. Anchor every item to a specific detail the user wrote. No generic advice. Questions must be concrete, use their numbers/words and be non-leading. Return ONLY JSON, no markdown fences.
+READABILITY RULES: no paragraphs. Every text value is a short fragment of 6-18 words. Where a value lists reasons, use an array of 1-3 bullets. In every text value, wrap the 1-2 most important words (numbers, deadlines, key nouns, the core risk) in ==double equals== so they can be highlighted, e.g. "==75% attendance== rule vs 10am-6pm schedule". Highlight sparingly: at most 2 per value.`;
+const SCHEMA=`{"decision":"","goals":[""],"reasons":[""],"assumptions":[{"text":"","evidence":"what supports it, or 'none stated'","confidence":"low|medium|high","if_wrong":"","validate":""}],"summary":"one sentence, max 22 words","top_priorities":[{"title":"3-6 words","reason":"max 14 words"}],"blind_spots":[{"factor":"3-8 words","tag":"FACT|POSSIBILITY|UNKNOWN","why_here":["bullet","bullet"],"priority":"high|medium|low"}],"contradictions":[{"a":"","b":"","tension":""}],"unknowns":[""],"risks":[""],"questions":[{"tier":"must|worth|relevant","anchor":"","question":"","why":""}],"could_change_thinking":["evidence that might change the view"],"links":[{"from":"id","to":"id","type":"supports|conflicts"}],"chat_suggestions":["practical question the user could ask a follow-up assistant"],"reasoning_confidence":"low|medium|high"}
+Limits: links connect items using ids g0.. (goals), r0.. (reasons), a0.. (assumptions), k0.. (risks), u0.. (unknowns) by array index; give 8-14 links showing which reason rests on which assumption, which goal each reason serves, which risk or unknown affects which assumption, and mark real tensions as conflicts. chat_suggestions: 5 personalized, practical, concrete 'how do I...' / 'what should I ask...' questions drawn from THIS situation (e.g. how to ask the company about schedule flexibility, how to find out about mentorship, how to raise exam leave), max 16 words each. Exactly 3 top_priorities (the most consequential items across everything), 3-5 assumptions, 4-6 blind_spots, 0-3 contradictions, 6-8 questions (at least 2 must), 2-3 could_change_thinking. Sort blind spots by priority.`;
+const BANNED=/\b(you should|i recommend|i suggest you|the best (choice|option)|you must (accept|reject|take|decline)|go with option)\b/i;
+async function api(messages,max){const r=await fetch('/api/claude',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages,max_tokens:max||2500})});if(!r.ok){let e={};try{e=await r.json()}catch(_){}throw {code:r.status===429?'rate_limited':'error',message:e.error}}return (await r.json()).text}
+const SAMPLE=async inp=>({text:await api(typeof inp==='string'?[{role:'user',content:inp}]:inp,1000)});
+async function askJSON(p){const t=await api([{role:'user',content:p}],3500);return JSON.parse(t.replace(/```json|```/g,'').trim())}
+async function ask(prompt){let r=await askJSON(prompt);if(BANNED.test(JSON.stringify(r)))r=await askJSON(prompt+'\n\nYour previous attempt contained directive language. Redo it strictly neutral, with no recommendations.');return r}
+function halo(){const K=['Good stipend','Close to home','Industry experience'],U=['Academic impact','Mentorship','Actual learning','Opportunity cost','Career alignment','Workload'];
+const pt=(i,n,r,o)=>{const a=i/n*6.283+o;return`left:${50+r*Math.cos(a)}%;top:${50+r*Math.sin(a)}%`};
+return`<div class="halo"><div class="ring"></div><div class="core">Should I accept this internship?</div>${K.map((k,i)=>`<span class="hn k" style="${pt(i,3,27,-1.2)}">${k}</span>`).join('')}${U.map((k,i)=>`<span class="hn u" style="${pt(i,6,44,.3)};animation-delay:${1.2+i*.8}s">${k}</span>`).join('')}</div>`}
+function startNow(){$('#start').scrollIntoView({behavior:'smooth'});setTimeout(()=>$('#d').focus(),500)}
+function home(){return`<section class="hero"><div><span class="eyebrow">A visual workspace for thinking</span><h1>See what you're missing <em>before you decide.</em></h1><p class="lead">BlindSpot helps you examine assumptions, uncover overlooked factors, and challenge your reasoning, without making the decision for you.</p><div class="row"><button onclick="startNow()">Start thinking →</button><button class="g" onclick="ex();startNow()">Explore an example</button></div></div>${halo()}</section>
+<section id="start"><h2 class="big">What's on your mind?</h2><p class="lead">Don't overthink the format. Just tell us what you're deciding.</p>
+<div class="card" style="padding:26px"><input id="d" class="xl" value="${esc(S.in.d||'')}" placeholder="I'm deciding whether to…">
+<label>Why are you leaning the way you are?</label><textarea id="r" class="xl" placeholder="The reasons that feel obvious to you…">${esc(S.in.r||'')}</textarea>
+<details><summary>Add more context <span class="h">(optional)</span></summary>
+<label>Options</label><input id="o" value="${esc(S.in.o||'')}" placeholder="Accept / decline / ask for part-time">
+<label>Key facts <span class="h">numbers, schedule, constraints</span></label><textarea id="f">${esc(S.in.f||'')}</textarea>
+<label>Concerns, or who else is affected</label><textarea id="c">${esc(S.in.c||'')}</textarea>
+<label>How confident are you right now? <span class="h" id="cv">${S.in.cf||3}</span>/5</label><input id="cf" type="range" min="1" max="5" value="${S.in.cf||3}" oninput="$('#cv').textContent=this.value"></details>
+<div class="row"><button id="gb" onclick="go()">Analyze my thinking →</button></div><div id="err">${esc(S.err)}</div></div>
+<p class="m" style="text-align:center">AI challenges your thinking. You make the decision.</p></section>`}
+function loading(){const st=['Reading your reasoning','Mapping your priorities','Examining your assumptions','Looking for what might be missing','Finding questions worth asking'];let i=0;
+const draw=done=>{$('#app').innerHTML=`<div class="load"><div class="pulse"></div><ul>${st.map((t,j)=>`<li class="${done||j<i?'d':j===i?'on':''}">${t}</li>`).join('')}</ul>${done?'<h2 class="big">Your thinking map is ready.</h2>':''}</div>`};
+draw();const t=setInterval(()=>{if(i<4){i++;draw()}},2600);
+return async ok=>{clearInterval(t);if(ok){draw(true);await new Promise(r=>setTimeout(r,900))}}}
+function ex(){S.in={d:'Should I accept a 6-month internship while in semester 6?',o:'Accept / decline / ask for part-time',r:'The stipend is good, the company is close to home, and it gives industry experience.',f:'Rs 25,000/month. 15 min from home. 5 days a week, 10am-6pm. Role: junior developer at a small startup. College has a 75% attendance rule; exams in month 4.',c:'My parents like the stipend.',cf:4};render()}
+function readIn(){S.in={d:$('#d').value.trim(),o:$('#o').value,r:$('#r').value,f:$('#f').value,c:$('#c').value,cf:$('#cf').value}}
+async function go(){readIn();if(!S.in.d){S.err='Describe the decision first.';return render()}
+ S.err='';S.busy=true;const stop=loading();
+ try{const i=S.in;S.cur=S.v1=await ask(`${BASE}\n\nSchema:\n${SCHEMA}\n\nDECISION: ${i.d}\nOPTIONS: ${i.o}\nREASONS: ${i.r}\nFACTS: ${i.f}\nCONCERNS/OTHERS: ${i.c}\nSELF-RATED CONFIDENCE: ${i.cf}/5`);S.tab='reasoning';S.ans={};S.changes=null;S.chat=[];S.sel=null;S.rec={id:Date.now(),ts:Date.now(),journal:''};persist()}
+ catch(e){S.err=e.code==='rate_limited'?'Too many requests right now. Please wait a few minutes and try again.':'Something went wrong. Please try again.'}
+ S.busy=false;await stop(!S.err);render()}
+async function reanalyze(){
+ document.querySelectorAll('.q textarea').forEach(t=>S.ans[t.dataset.i]=t.value);
+ const qa=(S.cur.questions||[]).map((q,i)=>S.ans[i]?`Q: ${q.question}\nA: ${S.ans[i]}`:null).filter(Boolean);
+ if(!qa.length){S.err='Answer at least one question first.';return render()}
+ S.err='';const b=$('#rb');b.disabled=true;b.textContent='Updating…';
+ try{const i=S.in;const n=await ask(`${BASE}\n\nThe user answered some questions. Update the analysis using their new information (move resolved unknowns out, revise assumption evidence/confidence, add any new blind spots or questions; do not repeat answered questions). Return the same schema plus "changes":{"new_factors":[""],"assumptions_updated":[""],"info_added":[""],"unknowns_resolved":[""],"new_questions":[""]}.\n\nSchema:\n${SCHEMA}\n\nORIGINAL INPUT: ${JSON.stringify(i)}\nPREVIOUS ANALYSIS: ${JSON.stringify(S.cur)}\nNEW ANSWERS:\n${qa.join('\n')}`);
+ S.cur=n;S.sel=null;S.changes=n.changes;S.ans={};S.tab='compare';persist()}
+ catch(e){S.err='Could not update. Please try again.'}
+ render()}
+async function challenge(){
+ const b=$('#cb');b.disabled=true;b.textContent='Thinking…';
+ try{const sample=SAMPLE;
+ S.chal=(await sample(`${BASE.replace('Return ONLY JSON, no markdown fences.','Respond in plain text.')}\n\nTask: "Challenge my thinking". Write (1) the strongest case someone could make AGAINST the option this person seems to lean toward, 4 short bullets, then (2) the strongest case someone could make AGAINST the opposite option, 4 short bullets, then (3) two uncomfortable but relevant questions. Use short bullets only (max 15 words each), wrap the key phrase of each bullet in ==double equals==, no paragraphs. Frame it as "a case others might make", not a conclusion. Do not say which is right.\n\nINPUT: ${JSON.stringify(S.in)}\nANALYSIS: ${JSON.stringify(S.cur)}`,{cache:false})).text}
+ catch(e){S.chal='Could not generate. Please try again.'}render()}
+const pill=(t,c)=>`<span class="pill ${esc(c||t)}">${esc(t)}</span>`;
+function T_reasoning(){const c=S.cur;return`<div class="card"><h2>At a glance</h2><p>${H(c.summary)}</p><span class="lbl">Look at these first</span><div class="top">${(c.top_priorities||[]).map((t,i)=>`<div><b>${i+1}. ${H(t.title)}</b><br><span class="m">${H(t.reason)}</span></div>`).join('')}</div></div>
+<div class="oo"><div class="a"><span class="lbl">What you told us</span><ul>${(c.reasons||[]).map(x=>`<li>${H(x)}</li>`).join('')}</ul></div><div class="mid">But your reasoning also depends on…</div><div class="b"><span class="lbl">What you might be missing</span><ul>${(c.blind_spots||[]).filter(b=>b.priority!=='low').slice(0,5).map(b=>`<li>${H(b.factor)}</li>`).join('')}</ul></div></div>
+<div class="card"><h2>🎯 Goals I inferred</h2><ul>${(c.goals||[]).map(x=>`<li>${H(x)}</li>`).join('')}</ul><h2 style="margin-top:10px">💬 Reasons you gave</h2><ul>${(c.reasons||[]).map(x=>`<li>${H(x)}</li>`).join('')}</ul></div>
+${(c.contradictions||[]).length?`<div class="card"><h2>⚡ Possible tensions</h2>${c.contradictions.map(x=>`<div class="ln"><span class="ic">↔</span><div>${H(x.a)} <b>vs</b> ${H(x.b)}<br><span class="m">${H(x.tension)}</span></div></div>`).join('')}</div>`:''}
+<p class="m">Does this match what you meant? If not, edit your input and run it again.</p>`}
+function T_assume(){return(S.cur.assumptions||[]).map(a=>`<div class="card as">${pill('ASSUMPTION')}<b>${H(a.text)}</b>
+<div class="ln"><span class="lbl">Evidence</span><span>${H(a.evidence)}</span></div>
+<div class="ln"><span class="lbl">Confidence</span><b class="${esc(a.confidence)}">${esc(a.confidence)}</b></div>
+<div class="ln"><span class="ic">⚠️</span><span><span class="lbl">If wrong</span>${H(a.if_wrong)}</span></div>
+<div class="ln"><span class="ic">✅</span><span><span class="lbl">How to check</span>${H(a.validate)}</span></div></div>`).join('')}
+function T_blind(){return(S.cur.blind_spots||[]).map((b,i)=>`<div class="card bs"><span class="num">0${i+1}</span>${pill(b.tag)}${pill(b.priority+' priority',b.priority==='high'?'low':b.priority==='medium'?'medium':'high')}<b>${H(b.factor)}</b><ul>${B(b.why_here).map(x=>`<li class="m">${H(x)}</li>`).join('')}</ul></div>`).join('')}
+function T_map(){const c=S.cur,col=(t,k,arr,cls)=>`<div class="col"><h3>${t}</h3>${(arr||[]).map((x,i)=>`<div class="nd ${typeof cls==='function'?cls(i):cls||''}" data-id="${k}${i}" onclick="selNode('${k}${i}')">${H(typeof x==='string'?x:x.text)}</div>`).join('')||'<span class="m">—</span>'}</div>`;
+return`<div class="note" style="margin-top:0">Tap any box to see what it connects to. Lines show what depends on what.</div><div class="scr" style="margin-top:12px"><div id="mw"><svg id="ms"></svg><div class="cols">${col('Goals','g',c.goals)}${col('Reasons','r',c.reasons)}${col('Assumptions','a',c.assumptions,i=>(c.assumptions[i].confidence==='low'?'weak':''))}${col('Risks','k',c.risks,'rk')}${col('Unknowns','u',c.unknowns,'un')}</div></div></div>
+<div class="leg"><span>━ supports</span><span style="color:var(--r)">╌ conflicts</span><span style="color:var(--a)">▭ dashed amber = weakly supported assumption</span><span style="color:var(--u)">▭ dashed purple = missing information</span></div><div class="card" id="dt"><span class="m">Select a box to see its details.</span></div>`}
+function detail(id){const c=S.cur,k=id[0],i=+id.slice(1);if(k==='a'){const a=c.assumptions[i];return`<span class="pill ASSUMPTION">ASSUMPTION</span><b>${H(a.text)}</b><div class="ln"><span class="lbl">Evidence</span>${H(a.evidence)}</div><div class="ln"><span class="ic">⚠️</span><span><span class="lbl">If wrong</span>${H(a.if_wrong)}</span></div><div class="ln"><span class="ic">✅</span><span><span class="lbl">Check</span>${H(a.validate)}</span></div>`}
+const arr={g:c.goals,r:c.reasons,k:c.risks,u:c.unknowns}[k]||[];return H(arr[i])}
+function mapLinks(){const c=S.cur;let L=(c.links||[]).filter(l=>document.querySelector(`#mw [data-id="${l.from}"]`)&&document.querySelector(`#mw [data-id="${l.to}"]`));
+if(!L.length){const n=(c.assumptions||[]).length||1;L=(c.reasons||[]).map((_,i)=>({from:'r'+i,to:'a'+(i%n),type:'supports'}))}return L}
+function drawMap(){const w=$('#mw');if(!w)return;const svg=$('#ms'),W=w.getBoundingClientRect(),L=mapLinks();svg.setAttribute('width',w.scrollWidth);svg.setAttribute('height',w.scrollHeight);
+svg.innerHTML=L.map((l,i)=>{const A=w.querySelector(`[data-id="${l.from}"]`).getBoundingClientRect(),B=w.querySelector(`[data-id="${l.to}"]`).getBoundingClientRect();
+let x1,x2;if(Math.abs(A.left-B.left)<8){x1=A.right-W.left;x2=B.right-W.left}else if(A.left<B.left){x1=A.right-W.left;x2=B.left-W.left}else{x1=A.left-W.left;x2=B.right-W.left}
+const y1=A.top+A.height/2-W.top,y2=B.top+B.height/2-W.top,d=Math.abs(A.left-B.left)<8?40:(x2-x1)/2,cf=l.type==='conflicts';
+return`<path data-f="${l.from}" data-t="${l.to}" d="M${x1},${y1} C${x1+d},${y1} ${x2-d},${y2} ${x2},${y2}" style="stroke:var(${cf?'--r':'--acc'});opacity:${cf?.9:.45}" ${cf?'stroke-dasharray="6 5"':''}/>`}).join('');
+if(S.sel)selNode(S.sel)}
+function selNode(id){S.sel=id;const w=$('#mw');if(!w)return;const con=new Set([id]);w.querySelectorAll('#ms path').forEach(p=>{const on=p.dataset.f===id||p.dataset.t===id;p.classList.toggle('dim',!on);if(on){con.add(p.dataset.f);con.add(p.dataset.t)}});
+w.querySelectorAll('.nd').forEach(n=>{n.classList.toggle('dim',!con.has(n.dataset.id));n.classList.toggle('sel',n.dataset.id===id)});$('#dt').innerHTML=detail(id)}
+addEventListener('resize',()=>{if(S.tab==='map')drawMap()});
+function T_q(){const tn={must:'Must consider',worth:'Worth exploring',relevant:'If relevant'};let i=0,h='';
+const qs=(S.cur.questions||[]).map((q,i)=>({...q,i}));
+for(const t of['must','worth','relevant']){const g=qs.filter(q=>q.tier===t);if(!g.length)continue;h+=`<h2 style="margin-top:16px">${tn[t]}</h2>`+g.map(q=>`<div class="card q qq"><span class="lbl">About</span><span class="m">“${H(q.anchor)}”</span><p style="margin:6px 0"><b>${H(q.question)}</b></p><div class="ln"><span class="ic">💡</span><span class="m"><span class="lbl">Why it matters</span>${H(q.why)}</span></div><textarea data-i="${q.i}" placeholder="Your answer (optional)">${esc(S.ans[q.i]||'')}</textarea></div>`).join('')}
+return h+`<div class="row"><button id="rb" onclick="reanalyze()">Update analysis with my answers</button></div>`}
+function T_chal(){return`<div class="note">A case others might make, not a conclusion. It argues against <i>both</i> directions so it doesn't tilt you.</div>
+${S.chal?`<div class="card" style="white-space:pre-wrap">${H(S.chal)}</div><p class="m">What in this did not convince you?</p>`:''}
+<div class="row"><button id="cb" onclick="challenge()">${S.chal?'Regenerate':'Challenge my thinking'}</button></div>`}
+function T_cmp(){const ch=S.changes;if(!ch)return`<div class="card">Answer some questions in the Questions tab and update the analysis to see how your reasoning changed.</div>`;
+const sec=(t,a)=>(a&&a.length)?`<div class="card"><h2>${t}</h2><ul>${a.map(x=>`<li>${H(x)}</li>`).join('')}</ul></div>`:'';
+const n=(a)=>(a||[]).filter(x=>x.confidence!=='low').length;
+return`<div class="card"><b>Assumptions with medium/high confidence:</b> ${n(S.v1.assumptions)} of ${(S.v1.assumptions||[]).length} → ${n(S.cur.assumptions)} of ${(S.cur.assumptions||[]).length}<br><b>Open unknowns:</b> ${(S.v1.unknowns||[]).length} → ${(S.cur.unknowns||[]).length}<br><b>Reasoning confidence:</b> ${esc(S.v1.reasoning_confidence)} → ${esc(S.cur.reasoning_confidence)}</div>`+
+`<p class="m">Confidence here reflects how well-evidenced your reasoning is, not whether a decision is right or wrong.</p>`+sec('New factors discovered',ch.new_factors)+sec('Assumptions updated',ch.assumptions_updated)+sec('Information added',ch.info_added)+sec('Unknowns resolved',ch.unknowns_resolved)+sec('New questions identified',ch.new_questions)}
+function T_rep(){const c=S.cur,L=a=>`<ul>${(a||[]).map(x=>`<li>${H(typeof x==='string'?x:x.text||x.factor||x.question)}</li>`).join('')}</ul>`;
+return`<div class="card"><h2>Your decision</h2>${H(c.decision)}</div>
+<div class="card"><h2>What seems clear</h2>${L((c.blind_spots||[]).filter(b=>b.tag==='FACT').map(b=>b.factor))||''}${L(c.reasons)}</div>
+<div class="card"><h2>Your main priorities</h2>${L(c.goals)}</div>
+<div class="card"><h2>Key assumptions</h2>${L(c.assumptions)}</div>
+<div class="card"><h2>Potential blind spots</h2>${L((c.blind_spots||[]).filter(b=>b.priority!=='low'))}</div>
+<div class="card"><h2>Conflicting considerations</h2>${(c.contradictions||[]).map(x=>`<p>${H(x.a)} ↔ ${H(x.b)}: <span class="m">${H(x.tension)}</span></p>`).join('')||'<span class="m">None identified.</span>'}</div>
+<div class="card"><h2>Important unknowns</h2>${L(c.unknowns)}</div>
+<div class="card"><h2>Questions worth answering</h2>${L((c.questions||[]).filter(q=>q.tier==='must'))}</div>
+<div class="card"><h2>What could change your thinking</h2>${L(c.could_change_thinking)}</div>
+<div class="card"><h2>Confidence in current reasoning</h2><b class="${esc(c.reasoning_confidence)}">${esc(c.reasoning_confidence)}</b> <span class="m">(based on how much of it is evidenced, not on whether the choice is right)</span></div>
+<div class="card rf" style="padding:28px"><h2 class="big">So, what do you think now?</h2><textarea id="jr" class="xl" oninput="saveJr(this.value)" placeholder="After looking at everything, I think…">${esc(S.rec&&S.rec.journal||'')}</textarea></div><div class="end"><h2 class="big">Your decision is yours.</h2><p>We just helped you see more of it.</p></div>
+<div class="row"><button onclick="tab('chat')">Ask AI for next steps →</button><button class="g" onclick="window.print()">Print / save as PDF</button></div>`}
+function fmt(t){const o=[];let ul=false;String(t).split('\n').forEach(l=>{const m=l.match(/^\s*[-*•]\s+(.*)/);if(m){if(!ul){o.push('<ul>');ul=true}o.push('<li>'+H(m[1])+'</li>')}else{if(ul){o.push('</ul>');ul=false}if(l.trim())o.push('<p style="margin:5px 0">'+H(l)+'</p>')}});if(ul)o.push('</ul>');return o.join('')}
+const CHATSYS=`You are LensCheck's follow-up assistant. The user has just reviewed an analysis of their decision. Help with practical next steps: how to word a request or question, what to research, who to ask, short draft messages or scripts, ways to test an assumption. NEVER tell them which option to choose or what they should decide; if asked "what should I do?", reflect the trade-offs back and offer questions instead. Do not state invented facts about real companies or people; label guesses as possibilities. Keep answers short: max 140 words, bullets, no long paragraphs, wrap the 1-2 key phrases per bullet in ==double equals==. For drafts, give a short ready-to-send message. End with at most one brief follow-up question.`;
+async function send(t){const i=$('#ci');t=(t||(i&&i.value)||'').trim();if(!t||S.cbusy)return;S.chat.push({role:'user',content:t});S.cbusy=true;render();
+try{const sample=SAMPLE;const turns=[{role:'user',content:CHATSYS+'\n\nCONTEXT: '+JSON.stringify({input:S.in,analysis:S.cur})},{role:'assistant',content:'Understood. What would you like help with?'},...S.chat];S.chat.push({role:'assistant',content:(await sample(turns,{cache:false})).text})}
+catch(e){S.chat.push({role:'assistant',content:'Sorry, I could not answer that. Please try again.'})}
+S.cbusy=false;persist();render()}
+function T_chat(){const sg=(S.cur.chat_suggestions||[]);
+return`<div class="card"><h2>💬 Ask a follow-up</h2><p class="m" style="margin:0">Practical help for your next steps. I won't choose for you.</p>
+<div class="sug">${sg.map((x,i)=>`<button onclick="send(S.cur.chat_suggestions[${i}])">${H(x)}</button>`).join('')}</div></div>
+<div class="chat">${S.chat.map(m=>`<div class="msg ${m.role}">${m.role==='user'?esc(m.content):fmt(m.content)}</div>`).join('')}${S.cbusy?'<div class="msg assistant m">Thinking…</div>':''}</div>
+<div class="cin"><input id="ci" placeholder="Ask anything about your next steps…" onkeydown="if(event.key==='Enter')send()"><button onclick="send()" ${S.cbusy?'disabled':''}>Send</button></div>`}
+const LS={get(){try{return JSON.parse(localStorage.getItem('bs:decisions')||'[]')}catch(e){return[]}},set(a){try{localStorage.setItem('bs:decisions',JSON.stringify(a));return true}catch(e){return false}}};
+let DB=null,UID=null;const dcol=()=>DB.collection('data/users/'+UID),clean=r=>JSON.parse(JSON.stringify(r));
+async function migrate(){const a=LS.get();if(!a.length)return;try{for(const r of a)await dcol().doc('d_'+r.id).set(clean(r));LS.set([])}catch(e){}}
+async function loadList(){const m=new Map(LS.get().map(x=>[x.id,x]));if(DB){try{(await dcol().get()).docs.forEach(d=>{const v=d.data();if(v&&v.id)m.set(v.id,v)})}catch(e){}}S.list=[...m.values()].sort((x,y)=>y.ts-x.ts)}
+function persist(){if(!S.rec||!S.cur)return;const r=clean({id:S.rec.id,ts:S.rec.ts,in:S.in,v1:S.v1,cur:S.cur,changes:S.changes||null,chat:S.chat,journal:S.rec.journal||''});
+S.list=[r,...(S.list||[]).filter(x=>x.id!==r.id)];S.mode=DB?'account':'browser';S.saved=true;
+const toLocal=()=>{S.saved=LS.set([r,...LS.get().filter(x=>x.id!==r.id)]);S.mode='browser'};
+if(DB){S.wq=(S.wq||Promise.resolve()).then(()=>dcol().doc('d_'+r.id).set(r)).catch(toLocal)}else toLocal()}
+function saveJr(v){if(S.rec){S.rec.journal=v;clearTimeout(S.jt);S.jt=setTimeout(persist,600)}}
+function newD(){S.cur=null;S.rec=null;S.view='';S.in={};S.chat=[];S.err='';render();scrollTo(0,0)}
+async function showHist(){S.view='hist';S.ll=true;render();scrollTo(0,0);await loadList();S.ll=false;if(S.view==='hist')render()}
+function openD(id){const r=(S.list||[]).find(x=>x.id===id);if(!r)return;S.in=r.in;S.v1=r.v1;S.cur=r.cur;S.changes=r.changes||null;S.chat=r.chat||[];S.rec={id:r.id,ts:r.ts,journal:r.journal||''};S.tab='reasoning';S.sel=null;S.view='';render();scrollTo(0,0)}
+async function delD(id){S.list=(S.list||[]).filter(x=>x.id!==id);LS.set(LS.get().filter(x=>x.id!==id));render();if(DB){try{await dcol().doc('d_'+id).delete()}catch(e){}}}
+function hist(){const a=S.list||[];return`<section><span class="eyebrow">My decisions</span><h2 class="big">Your thinking, over time.</h2>`+(S.ll&&!a.length?`<p class="m">Loading your decisions…</p>`:a.length?`<div>${a.map(r=>{const d=new Date(r.ts),c=r.cur||{};return`<div class="tli"><div class="dt">${d.toLocaleDateString('en',{month:'short',day:'2-digit'}).toUpperCase()}<br>${d.getFullYear()}</div><div class="card"><h2 class="big" style="font-size:1.5rem">${H(c.decision||(r.in&&r.in.d))}</h2><p class="m">${(c.assumptions||[]).length} assumptions · ${(c.blind_spots||[]).length} blind spots · ${(c.questions||[]).length} questions</p>${r.journal?'<span class="pill FACT">Reflection completed</span>':''}<div class="row"><button class="sm" onclick="openD(${r.id})">Open</button><button class="g sm" onclick="delD(${r.id})">Delete</button></div></div></div>`}).join('')}</div>`:`<div class="card"><p class="m">No saved decisions yet. Analyze one and it will appear here automatically.</p></div>`)+`<p class="m">${DB?'Saved privately to your account. Only you can see these.':'Saved in this browser only.'}</p></section>`}
+function results(){const T=[['reasoning','Your reasoning'],['blind','Blind spots'],['assume','Assumptions'],['map','Thinking map'],['q','Questions'],['chal','Challenge'],['compare','Before / after'],['rep','Reflection'],['chat','Ask AI']];
+const f={reasoning:T_reasoning,assume:T_assume,blind:T_blind,map:T_map,q:T_q,chal:T_chal,compare:T_cmp,rep:T_rep,chat:T_chat}[S.tab];
+const c=S.cur;return`<div class="rh"><span class="eyebrow">Your decision</span><h1 class="big">${H(c.decision)}</h1><p class="m">${(c.reasons||[]).length} reasons · ${(c.assumptions||[]).length} assumptions · ${(c.blind_spots||[]).length} potential blind spots · ${(c.questions||[]).length} questions${S.rec?(S.saved===false?' · not saved (storage unavailable)':(' · ✓ saved '+(S.mode==='account'?'to your account':'in this browser'))):''}</p></div>
+<div class="tabs">${T.map(([k,l])=>`<button class="${S.tab===k?'on':''}" onclick="tab('${k}')">${l}</button>`).join('')}</div>${f()}<div id="err">${esc(S.err)}</div>
+<div class="note">This is a thinking aid. Items tagged POSSIBILITY or UNKNOWN are not facts. You can disagree with anything here.</div>`}
+function tab(k){document.querySelectorAll('.q textarea').forEach(t=>S.ans[t.dataset.i]=t.value);S.tab=k;S.err='';render()}
+function render(){$('#app').innerHTML=S.view==='hist'?hist():S.cur?results():home();if(S.cur&&S.tab==='map')requestAnimationFrame(drawMap);if(S.cur&&S.tab==='chat'){const c=document.querySelector('.cin');if(c&&S.chat.length)c.scrollIntoView({block:'end'})}}
+render();
+</script></body></html>
